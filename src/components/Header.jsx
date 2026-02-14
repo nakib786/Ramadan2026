@@ -1,4 +1,4 @@
-import { Moon, Sun, Share2, Printer } from 'lucide-react'
+import { Moon, Sun, Share2, Download } from 'lucide-react'
 import './Header.css'
 
 function Header({ theme, toggleTheme }) {
@@ -20,8 +20,13 @@ function Header({ theme, toggleTheme }) {
         }
     }
 
-    const handlePrint = () => {
-        window.print()
+    const handleDownload = () => {
+        const link = document.createElement('a')
+        link.href = '/CCIC_Ramadan_Calender_2026.pdf'
+        link.download = 'CCIC_Ramadan_Calender_2026.pdf'
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
     }
 
     return (
@@ -58,11 +63,11 @@ function Header({ theme, toggleTheme }) {
 
                 <button
                     className="icon-btn"
-                    onClick={handlePrint}
-                    aria-label="Print"
-                    title="Print timetable"
+                    onClick={handleDownload}
+                    aria-label="Download PDF"
+                    title="Download Timetable PDF"
                 >
-                    <Printer size={20} />
+                    <Download size={20} />
                 </button>
             </div>
         </div>

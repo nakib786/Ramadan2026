@@ -128,28 +128,31 @@ tr.past {
 }
 
 tr.dst-notice {
-    background: linear-gradient(to right, #fffbeb, #fef3c7) !important;
-    border-top: 2px solid #f59e0b;
-    border-bottom: 2px solid #f59e0b;
+    background: transparent !important;
     cursor: default !important;
 }
 
 [data-theme="dark"] tr.dst-notice {
-    background: linear-gradient(to right, #4a3f1f, #5a4f2f) !important;
+    background: transparent !important;
 }
 
 tr.dst-notice td {
+    background: #fffbeb;
     color: #92400e;
     text-align: center;
-    padding: 20px;
-    font-weight: 600;
-    font-size: 0.95em;
-    border: none;
-    letter-spacing: 0.025em;
+    padding: 16px;
+    font-weight: 500;
+    font-size: 0.9em;
+    border-top: 1px solid #fcd34d;
+    border-bottom: 1px solid #fcd34d;
+    letter-spacing: 0.01em;
 }
 
 [data-theme="dark"] tr.dst-notice td {
+    background: rgba(245, 158, 11, 0.1);
     color: #fbbf24;
+    border-top: 1px solid rgba(245, 158, 11, 0.2);
+    border-bottom: 1px solid rgba(245, 158, 11, 0.2);
 }
 
 .date-col {
