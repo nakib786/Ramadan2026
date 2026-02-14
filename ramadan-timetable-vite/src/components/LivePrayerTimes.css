@@ -1,0 +1,98 @@
+.live-prayer-times {
+    background: linear-gradient(to bottom, #f9fafb, #ffffff);
+    padding: 32px 24px;
+    border-bottom: 1px solid var(--border);
+    animation: fadeIn 0.7s ease-out;
+}
+
+[data-theme="dark"] .live-prayer-times {
+    background: linear-gradient(to bottom, var(--light), var(--white));
+}
+
+.live-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.live-header h3 {
+    margin-bottom: 12px;
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.live-date {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.95em;
+    color: var(--text);
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.source {
+    font-size: 0.875em;
+    color: var(--text-light);
+}
+
+.live-times-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 16px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.live-time-card {
+    background: var(--white);
+    padding: 20px 16px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid var(--border);
+    transition: var(--transition);
+    cursor: default;
+}
+
+.live-time-card:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+}
+
+.prayer-name-live {
+    font-size: 0.875em;
+    color: var(--text-light);
+    margin-bottom: 8px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.prayer-time-live {
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--text);
+}
+
+@media (max-width: 768px) {
+    .live-times-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+
+    .live-time-card {
+        padding: 16px 12px;
+    }
+
+    .prayer-time-live {
+        font-size: 1.25em;
+    }
+}
+
+@media (max-width: 480px) {
+    .live-times-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

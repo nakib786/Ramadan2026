@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramadan 2026 Prayer Timetable - CCIC</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1e4620;
+            --secondary: #8b7355;
+            --accent: #2d5016;
+            --light: #f9fafb;
+            --white: #ffffff;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --border: #e5e7eb;
+            --suhoor: #e0f2fe;
+            --iftar: #fef3c7;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+            background: #f3f4f6;
+            min-height: 100vh;
+            padding: 20px 10px;
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: var(--white);
+            padding: 48px 32px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            width: 400px;
+            height: 400px;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 35px, rgba(255,255,255,0.03) 35px, rgba(255,255,255,0.03) 70px),
+                repeating-linear-gradient(90deg, transparent, transparent 35px, rgba(255,255,255,0.03) 35px, rgba(255,255,255,0.03) 70px);
+            opacity: 0.5;
+        }
+
+        .header::after {
+            content: '☪';
+            position: absolute;
+            font-size: 180px;
+            opacity: 0.08;
+            top: 50%;
+            right: -30px;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        .header h1 {
+            font-size: 2.25em;
+            margin-bottom: 12px;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+        }
+
+        .header .subtitle {
+            font-size: 1.125em;
+            opacity: 0.95;
+            margin-bottom: 8px;
+            font-weight: 400;
+        }
+
+        .header .org {
+            font-size: 0.95em;
+            opacity: 0.85;
+            font-weight: 300;
+        }
+
+        .live-prayer-times {
+            background: linear-gradient(to bottom, #f9fafb, #ffffff);
+            padding: 32px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .live-prayer-times h3 {
+            text-align: center;
+            margin-bottom: 8px;
+            font-size: 1.5em;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .live-prayer-times .source {
+            text-align: center;
+            font-size: 0.875em;
+            color: var(--text-light);
+            margin-bottom: 24px;
+        }
+
+        .live-times-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .live-time-card {
+            background: var(--white);
+            padding: 20px 16px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+
+        .live-time-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .live-time-card .prayer-name-live {
+            font-size: 0.875em;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .live-time-card .prayer-time-live {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .countdown {
+            background: var(--light);
+            padding: 24px;
+            text-align: center;
+            font-size: 1.25em;
+            font-weight: 600;
+            color: var(--text);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .countdown.started {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--white);
+        }
+
+        .countdown-timer {
+            display: inline-flex;
+            gap: 16px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .time-unit {
+            background: rgba(0, 0, 0, 0.05);
+            padding: 12px 20px;
+            border-radius: 8px;
+            min-width: 80px;
+        }
+
+        .countdown.started .time-unit {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .time-unit .number {
+            font-size: 1.75em;
+            display: block;
+            font-weight: 700;
+        }
+
+        .time-unit .label {
+            font-size: 0.75em;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            padding: 24px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 0.95em;
+        }
+
+        th {
+            background: var(--primary);
+            color: var(--white);
+            padding: 16px 12px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.875em;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        th:first-child {
+            border-radius: 8px 0 0 0;
+        }
+
+        th:last-child {
+            border-radius: 0 8px 0 0;
+        }
+
+        th small {
+            display: block;
+            font-size: 0.75em;
+            margin-top: 4px;
+            opacity: 0.9;
+            font-weight: 400;
+            text-transform: none;
+        }
+
+        td {
+            padding: 14px 12px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9em;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        tr.today {
+            background: #fef3c7;
+        }
+
+        tr.past {
+            opacity: 0.5;
+        }
+
+        tr.dst-notice {
+            background: linear-gradient(to right, #fffbeb, #fef3c7) !important;
+            border-top: 2px solid #f59e0b;
+            border-bottom: 2px solid #f59e0b;
+        }
+
+        tr.dst-notice td {
+            color: #92400e;
+            text-align: center;
+            padding: 20px;
+            font-weight: 600;
+            font-size: 0.95em;
+            border: none;
+            letter-spacing: 0.025em;
+        }
+
+        .date-col {
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .ramadan-day {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--white);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        /* Highlight Suhoor (Fajr) column */
+        td:nth-child(3) {
+            background: var(--suhoor);
+            font-weight: 600;
+        }
+
+        th:nth-child(3) {
+            background: #0369a1 !important;
+        }
+
+        /* Highlight Iftar (Maghrib) column */
+        td:nth-child(7) {
+            background: var(--iftar);
+            font-weight: 600;
+        }
+
+        th:nth-child(7) {
+            background: #92400e !important;
+        }
+
+        /* Highlight Ramadan Day column */
+        td:nth-child(2) {
+            background: #f3f4f6;
+        }
+
+        th:nth-child(2) {
+            background: #374151 !important;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: var(--white);
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 16px;
+            max-width: 540px;
+            width: 90%;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--white);
+            padding: 28px;
+            border-radius: 16px 16px 0 0;
+            position: relative;
+        }
+
+        .modal-header h2 {
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 1.5em;
+        }
+
+        .modal-header .day-info {
+            opacity: 0.9;
+            font-size: 0.95em;
+            font-weight: 400;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            color: var(--white);
+            font-size: 32px;
+            font-weight: 300;
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.2s;
+            line-height: 1;
+        }
+
+        .close:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            padding: 32px;
+        }
+
+        .prayer-time {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            margin: 12px 0;
+            background: var(--light);
+            border-radius: 8px;
+            border-left: 3px solid var(--border);
+            transition: all 0.2s;
+        }
+
+        .prayer-time:hover {
+            background: #f3f4f6;
+            border-left-color: var(--primary);
+        }
+
+        .prayer-time.highlight {
+            background: var(--iftar);
+            border-left-color: #92400e;
+            border-left-width: 4px;
+        }
+
+        .prayer-name {
+            font-weight: 600;
+            color: var(--text);
+            font-size: 0.95em;
+        }
+
+        .prayer-value {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.15em;
+        }
+
+        /* Dua Slideshow */
+        .dua-slideshow {
+            background: linear-gradient(to bottom, #ffffff, #f9fafb);
+            padding: 40px 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .dua-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .dua-slide {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .dua-slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dua-title {
+            text-align: center;
+            font-size: 1.5em;
+            color: var(--primary);
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+
+        .dua-arabic {
+            text-align: center;
+            font-size: 1.75em;
+            color: var(--text);
+            margin: 24px 0;
+            line-height: 2;
+            direction: rtl;
+            font-family: 'Traditional Arabic', 'Al Qalam', 'Amiri', serif;
+            padding: 28px;
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .dua-translation {
+            text-align: center;
+            font-size: 1.05em;
+            color: var(--text);
+            margin: 20px 0;
+            padding: 20px;
+            background: var(--light);
+            border-radius: 6px;
+            line-height: 1.7;
+        }
+
+        .dua-controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .dua-btn {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .dua-btn:hover {
+            background: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .dua-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #d1d5db;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .dot.active {
+            background: var(--primary);
+            transform: scale(1.2);
+        }
+
+        .footer {
+            background: var(--light);
+            padding: 32px 24px;
+            text-align: center;
+            font-size: 0.95em;
+            color: var(--text);
+            border-top: 1px solid var(--border);
+        }
+
+        .footer .verse {
+            margin: 16px 0 24px;
+            padding: 20px;
+            background: var(--white);
+            border-radius: 8px;
+            border-left: 3px solid var(--secondary);
+            line-height: 1.6;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 12px 28px;
+            border-radius: 6px;
+            font-size: 0.95em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin: 16px 0;
+            text-decoration: none;
+        }
+
+        .download-btn:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 70, 32, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.75em;
+            }
+
+            .header {
+                padding: 36px 24px;
+            }
+
+            .countdown {
+                font-size: 1.1em;
+            }
+
+            .live-times-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            table {
+                font-size: 0.85em;
+            }
+
+            th, td {
+                padding: 10px 6px;
+            }
+
+            .dua-arabic {
+                font-size: 1.4em;
+            }
+
+            .dua-title {
+                font-size: 1.25em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            th:nth-child(4), th:nth-child(5), th:nth-child(6), th:nth-child(8), th:nth-child(9),
+            td:nth-child(4), td:nth-child(5), td:nth-child(6), td:nth-child(8), td:nth-child(9) {
+                display: none;
+            }
+
+            .live-times-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .dua-arabic {
+                font-size: 1.25em;
+                padding: 20px;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-light);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Ramadan 2026 (Hijri 1447)</h1>
+            <div class="subtitle">Prayer Timetable</div>
+            <div class="org">Central Cariboo Islamic Center - The BC Muslim Association</div>
+        </div>
+
+        <div class="live-prayer-times">
+            <h3>Today's Prayer Times in Williams Lake, BC</h3>
+            <div class="source">Live from IslamicFinder.org | 12 February 2026 (24 Shaban 1447)</div>
+            <div class="live-times-grid">
+                <div class="live-time-card">
+                    <div class="prayer-name-live">Fajr</div>
+                    <div class="prayer-time-live">5:54 AM</div>
+                </div>
+                <div class="live-time-card">
+                    <div class="prayer-name-live">Sunrise</div>
+                    <div class="prayer-time-live">7:29 AM</div>
+                </div>
+                <div class="live-time-card">
+                    <div class="prayer-name-live">Dhuhr</div>
+                    <div class="prayer-time-live">12:23 PM</div>
+                </div>
+                <div class="live-time-card">
+                    <div class="prayer-name-live">Asr</div>
+                    <div class="prayer-time-live">2:49 PM</div>
+                </div>
+                <div class="live-time-card">
+                    <div class="prayer-name-live">Maghrib</div>
+                    <div class="prayer-time-live">5:18 PM</div>
+                </div>
+                <div class="live-time-card">
+                    <div class="prayer-name-live">Isha</div>
+                    <div class="prayer-time-live">6:53 PM</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="countdown" id="countdown">
+            <div id="countdownText">Calculating...</div>
+            <div class="countdown-timer" id="countdownTimer"></div>
+        </div>
+
+        <div class="table-container">
+            <table id="prayerTable">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Ramadan<br><small>Day</small></th>
+                        <th>Fajr<br><small>Suhoor</small></th>
+                        <th>Sunrise</th>
+                        <th>Dhuhr</th>
+                        <th>Asr</th>
+                        <th>Maghrib<br><small>Iftar</small></th>
+                        <th>Isha</th>
+                        <th>Proposed<br><small>Isha</small></th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr><td colspan="9" class="loading">Loading prayer times...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="dua-slideshow">
+            <div class="dua-container">
+                <div class="dua-slide active">
+                    <div class="dua-title">Dua for Suhoor (Before Fasting)</div>
+                    <div class="dua-arabic">
+                        بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ<br>
+                        وَبِصَوْمِ غَدٍ نَّوَيْتُ مِنْ شَهْرِ رَمَضَانَ
+                    </div>
+                    <div class="dua-translation">
+                        In the name of Allah, the Most Gracious, the Most Merciful<br>
+                        I intend to keep the fast for tomorrow in the month of Ramadan
+                    </div>
+                </div>
+
+                <div class="dua-slide">
+                    <div class="dua-title">Dua for Iftar (Breaking Fast)</div>
+                    <div class="dua-arabic">
+                        اللَّهُمَّ إِنِّي لَكَ صُمْتُ وَبِكَ آمَنْتُ وَعَلَيْكَ تَوَكَّلْتُ<br>
+                        وَعَلَىٰ رِزْقِكَ أَفْطَرْتُ
+                    </div>
+                    <div class="dua-translation">
+                        O Allah! I fasted for You and I believe in You and I put my trust in You<br>
+                        and I break my fast with Your sustenance
+                    </div>
+                </div>
+
+                <div class="dua-slide">
+                    <div class="dua-title">Quranic Verse - The Purpose of Fasting</div>
+                    <div class="dua-arabic">
+                        يَا أَيُّهَا الَّذِينَ آمَنُوا كُتِبَ عَلَيْكُمُ الصِّيَامُ كَمَا كُتِبَ عَلَى الَّذِينَ مِن قَبْلِكُمْ<br>
+                        لَعَلَّكُمْ تَتَّقُونَ
+                    </div>
+                    <div class="dua-translation">
+                        "O you who believe, fasting is prescribed for you as it was prescribed for those before you,<br>
+                        that you may become righteous."<br>
+                        <strong>- Surah Al-Baqarah (2:183)</strong>
+                    </div>
+                </div>
+
+                <div class="dua-slide">
+                    <div class="dua-title">Hadith - Reward of Fasting</div>
+                    <div class="dua-arabic">
+                        مَنْ صَامَ رَمَضَانَ إِيمَانًا وَاحْتِسَابًا<br>
+                        غُفِرَ لَهُ مَا تَقَدَّمَ مِنْ ذَنْبِهِ
+                    </div>
+                    <div class="dua-translation">
+                        "Whoever fasts the month of Ramadan out of faith and seeking reward,<br>
+                        his past sins will be forgiven."<br>
+                        <strong>- Sahih al-Bukhari, Hadith 38</strong>
+                    </div>
+                </div>
+
+                <div class="dua-controls">
+                    <button class="dua-btn" onclick="previousDua()">← Previous</button>
+                    <button class="dua-btn" onclick="nextDua()">Next →</button>
+                </div>
+                
+                <div class="dua-dots" id="duaDots"></div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="verse">
+                <strong>May this Ramadan bring unity, compassion, and renewal to every home in our community.</strong><br>
+                Ramadan Mubarak
+            </div>
+            
+            <button class="download-btn" onclick="downloadPDF()">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                Download PDF Calendar
+            </button>
+            
+            <p style="margin-top: 16px; font-size: 0.875em; color: var(--text-light);">
+                Source: Islamic Society of North America | Fajr 15.0°, Isha 15.0°<br>
+                Fiqh Jafria: Suhoor Time -10min | Iftar Time +10min
+            </p>
+        </div>
+    </div>
+
+    <div id="prayerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2 id="modalDate"></h2>
+                <div class="day-info" id="modalDay"></div>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        const ramadanData = [
+            { date: "Wednesday, February 18, 2026", day: 1, fajr: "5:43 AM", sunrise: "7:17 AM", dhuhr: "12:23 PM", asr: "2:57 PM", maghrib: "5:29 PM", isha: "7:03 PM", proposed: "7:15 PM" },
+            { date: "Thursday, February 19, 2026", day: 2, fajr: "5:41 AM", sunrise: "7:15 AM", dhuhr: "12:23 PM", asr: "2:59 PM", maghrib: "5:31 PM", isha: "7:05 PM", proposed: "7:15 PM" },
+            { date: "Friday, February 20, 2026", day: 3, fajr: "5:39 AM", sunrise: "7:13 AM", dhuhr: "12:23 PM", asr: "3:00 PM", maghrib: "5:33 PM", isha: "7:07 PM", proposed: "7:15 PM" },
+            { date: "Saturday, February 21, 2026", day: 4, fajr: "5:37 AM", sunrise: "7:11 AM", dhuhr: "12:23 PM", asr: "3:01 PM", maghrib: "5:34 PM", isha: "7:08 PM", proposed: "7:15 PM" },
+            { date: "Sunday, February 22, 2026", day: 5, fajr: "5:35 AM", sunrise: "7:09 AM", dhuhr: "12:22 PM", asr: "3:03 PM", maghrib: "5:36 PM", isha: "7:10 PM", proposed: "7:15 PM" },
+            { date: "Monday, February 23, 2026", day: 6, fajr: "5:33 AM", sunrise: "7:06 AM", dhuhr: "12:22 PM", asr: "3:04 PM", maghrib: "5:38 PM", isha: "7:12 PM", proposed: "7:15 PM" },
+            { date: "Tuesday, February 24, 2026", day: 7, fajr: "5:31 AM", sunrise: "7:04 AM", dhuhr: "12:22 PM", asr: "3:06 PM", maghrib: "5:40 PM", isha: "7:14 PM", proposed: "7:15 PM" },
+            { date: "Wednesday, February 25, 2026", day: 8, fajr: "5:29 AM", sunrise: "7:02 AM", dhuhr: "12:22 PM", asr: "3:07 PM", maghrib: "5:42 PM", isha: "7:15 PM", proposed: "7:15 PM" },
+            { date: "Thursday, February 26, 2026", day: 9, fajr: "5:27 AM", sunrise: "7:00 AM", dhuhr: "12:22 PM", asr: "3:08 PM", maghrib: "5:44 PM", isha: "7:17 PM", proposed: "7:30 PM" },
+            { date: "Friday, February 27, 2026", day: 10, fajr: "5:25 AM", sunrise: "6:58 AM", dhuhr: "12:22 PM", asr: "3:10 PM", maghrib: "5:45 PM", isha: "7:19 PM", proposed: "7:30 PM" },
+            { date: "Saturday, February 28, 2026", day: 11, fajr: "5:22 AM", sunrise: "6:56 AM", dhuhr: "12:22 PM", asr: "3:11 PM", maghrib: "5:47 PM", isha: "7:21 PM", proposed: "7:30 PM" },
+            { date: "Sunday, March 1, 2026", day: 12, fajr: "5:20 AM", sunrise: "6:53 AM", dhuhr: "12:21 PM", asr: "3:12 PM", maghrib: "5:49 PM", isha: "7:22 PM", proposed: "7:30 PM" },
+            { date: "Monday, March 2, 2026", day: 13, fajr: "5:18 AM", sunrise: "6:51 AM", dhuhr: "12:21 PM", asr: "3:13 PM", maghrib: "5:51 PM", isha: "7:24 PM", proposed: "7:30 PM" },
+            { date: "Tuesday, March 3, 2026", day: 14, fajr: "5:16 AM", sunrise: "6:49 AM", dhuhr: "12:21 PM", asr: "3:15 PM", maghrib: "5:53 PM", isha: "7:26 PM", proposed: "7:30 PM" },
+            { date: "Wednesday, March 4, 2026", day: 15, fajr: "5:14 AM", sunrise: "6:47 AM", dhuhr: "12:21 PM", asr: "3:16 PM", maghrib: "5:55 PM", isha: "7:28 PM", proposed: "7:30 PM" },
+            { date: "Thursday, March 5, 2026", day: 16, fajr: "5:11 AM", sunrise: "6:45 AM", dhuhr: "12:20 PM", asr: "3:17 PM", maghrib: "5:56 PM", isha: "7:30 PM", proposed: "7:30 PM" },
+            { date: "Friday, March 6, 2026", day: 17, fajr: "5:09 AM", sunrise: "6:42 AM", dhuhr: "12:20 PM", asr: "3:18 PM", maghrib: "5:58 PM", isha: "7:31 PM", proposed: "7:30 PM" },
+            { date: "Saturday, March 7, 2026", day: 18, fajr: "5:07 AM", sunrise: "6:40 AM", dhuhr: "12:20 PM", asr: "3:20 PM", maghrib: "6:00 PM", isha: "7:33 PM", proposed: "7:30 PM" },
+            { date: "Sunday, March 8, 2026", day: 19, fajr: "6:07 AM", sunrise: "7:40 AM", dhuhr: "1:20 PM", asr: "4:20 PM", maghrib: "7:00 PM", isha: "8:33 PM", proposed: "8:45 PM" },
+            { date: "Monday, March 9, 2026", day: 20, fajr: "6:04 AM", sunrise: "7:38 AM", dhuhr: "1:20 PM", asr: "4:21 PM", maghrib: "7:02 PM", isha: "8:35 PM", proposed: "8:45 PM" },
+            { date: "Tuesday, March 10, 2026", day: 21, fajr: "6:02 AM", sunrise: "7:35 AM", dhuhr: "1:19 PM", asr: "4:22 PM", maghrib: "7:03 PM", isha: "8:37 PM", proposed: "8:45 PM" },
+            { date: "Wednesday, March 11, 2026", day: 22, fajr: "6:00 AM", sunrise: "7:33 AM", dhuhr: "1:19 PM", asr: "4:23 PM", maghrib: "7:05 PM", isha: "8:39 PM", proposed: "8:45 PM" },
+            { date: "Thursday, March 12, 2026", day: 23, fajr: "5:57 AM", sunrise: "7:31 AM", dhuhr: "1:19 PM", asr: "4:24 PM", maghrib: "7:07 PM", isha: "8:41 PM", proposed: "8:45 PM" },
+            { date: "Friday, March 13, 2026", day: 24, fajr: "5:55 AM", sunrise: "7:29 AM", dhuhr: "1:19 PM", asr: "4:25 PM", maghrib: "7:09 PM", isha: "8:42 PM", proposed: "8:45 PM" },
+            { date: "Saturday, March 14, 2026", day: 25, fajr: "5:53 AM", sunrise: "7:26 AM", dhuhr: "1:18 PM", asr: "4:27 PM", maghrib: "7:11 PM", isha: "8:44 PM", proposed: "8:45 PM" },
+            { date: "Sunday, March 15, 2026", day: 26, fajr: "5:50 AM", sunrise: "7:24 AM", dhuhr: "1:18 PM", asr: "4:28 PM", maghrib: "7:12 PM", isha: "8:46 PM", proposed: "9:00 PM" },
+            { date: "Monday, March 16, 2026", day: 27, fajr: "5:48 AM", sunrise: "7:22 AM", dhuhr: "1:18 PM", asr: "4:29 PM", maghrib: "7:14 PM", isha: "8:48 PM", proposed: "9:00 PM" },
+            { date: "Tuesday, March 17, 2026", day: 28, fajr: "5:45 AM", sunrise: "7:19 AM", dhuhr: "1:18 PM", asr: "4:30 PM", maghrib: "7:16 PM", isha: "8:50 PM", proposed: "9:00 PM" },
+            { date: "Wednesday, March 18, 2026", day: 29, fajr: "5:43 AM", sunrise: "7:17 AM", dhuhr: "1:17 PM", asr: "4:31 PM", maghrib: "7:18 PM", isha: "8:52 PM", proposed: "9:00 PM" },
+            { date: "Thursday, March 19, 2026", day: 30, fajr: "5:40 AM", sunrise: "7:15 AM", dhuhr: "1:17 PM", asr: "4:32 PM", maghrib: "7:19 PM", isha: "8:54 PM", proposed: "9:00 PM" }
+        ];
+
+        const ramadanStart = new Date(2026, 1, 18);
+        const ramadanEnd = new Date(2026, 2, 19);
+
+        let currentDua = 0;
+        const totalDuas = 4;
+
+        function showDua(index) {
+            const slides = document.querySelectorAll('.dua-slide');
+            const dots = document.querySelectorAll('.dot');
+            
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+        }
+
+        function nextDua() {
+            currentDua = (currentDua + 1) % totalDuas;
+            showDua(currentDua);
+        }
+
+        function previousDua() {
+            currentDua = (currentDua - 1 + totalDuas) % totalDuas;
+            showDua(currentDua);
+        }
+
+        function initDuaSlideshow() {
+            const dotsContainer = document.getElementById('duaDots');
+            for (let i = 0; i < totalDuas; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                if (i === 0) dot.classList.add('active');
+                dot.onclick = () => {
+                    currentDua = i;
+                    showDua(i);
+                };
+                dotsContainer.appendChild(dot);
+            }
+            
+            setInterval(() => {
+                nextDua();
+            }, 8000);
+        }
+
+        function updateCountdown() {
+            const now = new Date();
+            const countdownEl = document.getElementById('countdown');
+            const textEl = document.getElementById('countdownText');
+            const timerEl = document.getElementById('countdownTimer');
+
+            if (now < ramadanStart) {
+                const diff = ramadanStart - now;
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                textEl.textContent = 'Ramadan Begins In:';
+                timerEl.innerHTML = `
+                    <div class="time-unit">
+                        <span class="number">${days}</span>
+                        <span class="label">Days</span>
+                    </div>
+                    <div class="time-unit">
+                        <span class="number">${hours}</span>
+                        <span class="label">Hours</span>
+                    </div>
+                    <div class="time-unit">
+                        <span class="number">${minutes}</span>
+                        <span class="label">Minutes</span>
+                    </div>
+                    <div class="time-unit">
+                        <span class="number">${seconds}</span>
+                        <span class="label">Seconds</span>
+                    </div>
+                `;
+            } else if (now <= ramadanEnd) {
+                countdownEl.classList.add('started');
+                const dayNum = Math.floor((now - ramadanStart) / (1000 * 60 * 60 * 24)) + 1;
+                textEl.textContent = `Ramadan Mubarak - Day ${dayNum} of 30`;
+                timerEl.innerHTML = '';
+            } else {
+                countdownEl.classList.add('started');
+                textEl.textContent = 'Ramadan 1447 has concluded. May Allah accept our fasts and prayers.';
+                timerEl.innerHTML = '';
+            }
+        }
+
+        function populateTable() {
+            const tbody = document.getElementById('tableBody');
+            const now = new Date();
+            now.setHours(0, 0, 0, 0);
+
+            let html = '';
+            ramadanData.forEach((entry, index) => {
+                const entryDate = new Date(entry.date);
+                entryDate.setHours(0, 0, 0, 0);
+                
+                let rowClass = '';
+                if (entryDate.getTime() === now.getTime()) {
+                    rowClass = 'today';
+                } else if (entryDate < now) {
+                    rowClass = 'past';
+                }
+
+                html += `
+                    <tr class="${rowClass}" onclick="showDayDetails(${index})" style="cursor: pointer;">
+                        <td class="date-col">${entry.date.split(',')[0]}, ${entry.date.split(',')[1]}</td>
+                        <td><span class="ramadan-day">${entry.day}</span></td>
+                        <td>${entry.fajr}</td>
+                        <td>${entry.sunrise}</td>
+                        <td>${entry.dhuhr}</td>
+                        <td>${entry.asr}</td>
+                        <td>${entry.maghrib}</td>
+                        <td>${entry.isha}</td>
+                        <td>${entry.proposed}</td>
+                    </tr>
+                `;
+                
+                if (entry.day === 18) {
+                    html += `
+                        <tr class="dst-notice">
+                            <td colspan="9">
+                                ⏰ Daylight Saving Time Begins - Clocks spring forward 1 hour on March 8, 2026 at 2:00 AM
+                            </td>
+                        </tr>
+                    `;
+                }
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        function showDayDetails(index) {
+            const entry = ramadanData[index];
+            const modal = document.getElementById('prayerModal');
+            
+            document.getElementById('modalDate').textContent = entry.date;
+            document.getElementById('modalDay').textContent = `Ramadan Day ${entry.day} of 30`;
+            
+            const now = new Date();
+            const entryDate = new Date(entry.date);
+            const isFuture = entryDate > now;
+            
+            document.getElementById('modalBody').innerHTML = `
+                <div class="prayer-time">
+                    <span class="prayer-name">Fajr (Suhoor)</span>
+                    <span class="prayer-value">${entry.fajr}</span>
+                </div>
+                <div class="prayer-time">
+                    <span class="prayer-name">Sunrise</span>
+                    <span class="prayer-value">${entry.sunrise}</span>
+                </div>
+                <div class="prayer-time">
+                    <span class="prayer-name">Dhuhr</span>
+                    <span class="prayer-value">${entry.dhuhr}</span>
+                </div>
+                <div class="prayer-time">
+                    <span class="prayer-name">Asr</span>
+                    <span class="prayer-value">${entry.asr}</span>
+                </div>
+                <div class="prayer-time highlight">
+                    <span class="prayer-name">Maghrib (Iftar)</span>
+                    <span class="prayer-value">${entry.maghrib}</span>
+                </div>
+                <div class="prayer-time">
+                    <span class="prayer-name">Isha</span>
+                    <span class="prayer-value">${entry.isha}</span>
+                </div>
+                <div class="prayer-time">
+                    <span class="prayer-name">Proposed Isha Prayer</span>
+                    <span class="prayer-value">${entry.proposed}</span>
+                </div>
+                <div style="margin-top: 20px; padding: 16px; background: #f9fafb; border-radius: 6px; text-align: center;">
+                    <p style="font-size: 0.95em; color: #374151;">
+                        ${isFuture ? 'May Allah accept your preparations' : 'May Allah accept your worship'}
+                    </p>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+
+        function showTodayPrayer() {
+            const now = new Date();
+            now.setHours(0, 0, 0, 0);
+            
+            const todayIndex = ramadanData.findIndex(entry => {
+                const entryDate = new Date(entry.date);
+                entryDate.setHours(0, 0, 0, 0);
+                return entryDate.getTime() === now.getTime();
+            });
+            
+            if (todayIndex !== -1) {
+                showDayDetails(todayIndex);
+            } else {
+                alert('Today is not within Ramadan 2026. Ramadan begins on February 18, 2026.');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('prayerModal').style.display = 'none';
+        }
+
+        function downloadPDF() {
+            window.open('CCIC_Ramadan_Calender_2026.pdf', '_blank');
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('prayerModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        updateCountdown();
+        populateTable();
+        initDuaSlideshow();
+        setInterval(updateCountdown, 1000);
+
+        window.addEventListener('load', function() {
+            const now = new Date();
+            if (now >= ramadanStart && now <= ramadanEnd) {
+                setTimeout(showTodayPrayer, 1000);
+            }
+        });
+    </script>
+</body>
+</html>

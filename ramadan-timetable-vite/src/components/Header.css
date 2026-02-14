@@ -1,0 +1,129 @@
+.header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: var(--white);
+    padding: 48px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.header-pattern {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    width: 400px;
+    height: 400px;
+    background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 35px, rgba(255, 255, 255, 0.03) 35px, rgba(255, 255, 255, 0.03) 70px),
+        repeating-linear-gradient(90deg, transparent, transparent 35px, rgba(255, 255, 255, 0.03) 35px, rgba(255, 255, 255, 0.03) 70px);
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.header-logo-container {
+    margin-bottom: 24px;
+    z-index: 2;
+    position: relative;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.header-logo {
+    height: 80px;
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.header-logo:hover {
+    transform: scale(1.05);
+}
+
+.header-content {
+    position: relative;
+    z-index: 1;
+}
+
+.header-title {
+    font-size: 2.25em;
+    margin-bottom: 12px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    animation: slideIn 0.6s ease-out;
+}
+
+.header-subtitle {
+    font-size: 1.125em;
+    opacity: 0.95;
+    margin-bottom: 8px;
+    font-weight: 400;
+    animation: slideIn 0.7s ease-out;
+}
+
+.header-org {
+    font-size: 0.95em;
+    opacity: 0.85;
+    font-weight: 300;
+    animation: slideIn 0.8s ease-out;
+}
+
+.header-actions {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+}
+
+.icon-btn {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--white);
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    backdrop-filter: blur(10px);
+}
+
+.icon-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.icon-btn:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    .header {
+        padding: 36px 24px;
+    }
+
+    .header-title {
+        font-size: 1.75em;
+    }
+
+    .header-crescent {
+        font-size: 120px;
+        right: -20px;
+    }
+
+    .header-actions {
+        top: 12px;
+        right: 12px;
+        gap: 6px;
+    }
+
+    .icon-btn {
+        width: 36px;
+        height: 36px;
+    }
+}

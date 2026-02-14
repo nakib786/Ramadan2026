@@ -1,0 +1,72 @@
+import { Moon, Sun, Share2, Printer } from 'lucide-react'
+import './Header.css'
+
+function Header({ theme, toggleTheme }) {
+    const handleShare = async () => {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: 'Ramadan 2026 Prayer Timetable',
+                    text: 'Check out the Ramadan 2026 prayer times for Williams Lake, BC',
+                    url: window.location.href
+                })
+            } catch (err) {
+                console.log('Error sharing:', err)
+            }
+        } else {
+            // Fallback: copy link to clipboard
+            navigator.clipboard.writeText(window.location.href)
+            alert('Link copied to clipboard!')
+        }
+    }
+
+    const handlePrint = () => {
+        window.print()
+    }
+
+    return (
+        <div className="header">
+            <div className="header-pattern"></div>
+            <div className="header-logo-container">
+                <img src="/logo.jpg" alt="BCMA Logo" className="header-logo" />
+            </div>
+
+            <div className="header-content">
+                <h1 className="header-title">Ramadan 2026 (Hijri 1447)</h1>
+                <div className="header-subtitle">Prayer Timetable</div>
+                <div className="header-org">Central Cariboo Islamic Center - The BC Muslim Association</div>
+            </div>
+
+            <div className="header-actions no-print">
+                <button
+                    className="icon-btn"
+                    onClick={toggleTheme}
+                    aria-label="Toggle theme"
+                    title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+                >
+                    {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+                </button>
+
+                <button
+                    className="icon-btn"
+                    onClick={handleShare}
+                    aria-label="Share"
+                    title="Share this timetable"
+                >
+                    <Share2 size={20} />
+                </button>
+
+                <button
+                    className="icon-btn"
+                    onClick={handlePrint}
+                    aria-label="Print"
+                    title="Print timetable"
+                >
+                    <Printer size={20} />
+                </button>
+            </div>
+        </div>
+    )
+}
+
+export default Header
