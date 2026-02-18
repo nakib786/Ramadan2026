@@ -1,4 +1,5 @@
 export const ramadanData = [
+    { date: "Tuesday, February 17, 2026", day: "Start", fajr: "5:45 AM", sunrise: "7:19 AM", dhuhr: "12:23 PM", asr: "2:55 PM", maghrib: "5:27 PM", isha: "7:01 PM", proposed: "7:15 PM" },
     { date: "Wednesday, February 18, 2026", day: 1, fajr: "5:43 AM", sunrise: "7:17 AM", dhuhr: "12:23 PM", asr: "2:57 PM", maghrib: "5:29 PM", isha: "7:03 PM", proposed: "7:15 PM" },
     { date: "Thursday, February 19, 2026", day: 2, fajr: "5:41 AM", sunrise: "7:15 AM", dhuhr: "12:23 PM", asr: "2:59 PM", maghrib: "5:31 PM", isha: "7:05 PM", proposed: "7:15 PM" },
     { date: "Friday, February 20, 2026", day: 3, fajr: "5:39 AM", sunrise: "7:13 AM", dhuhr: "12:23 PM", asr: "3:00 PM", maghrib: "5:33 PM", isha: "7:07 PM", proposed: "7:15 PM" },

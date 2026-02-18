@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import Header from './components/Header'
 import LivePrayerTimes from './components/LivePrayerTimes'
-import Countdown from './components/Countdown'
 import PrayerTable from './components/PrayerTable'
 import DuaSlideshow from './components/DuaSlideshow'
 import Footer from './components/Footer'
@@ -11,16 +10,12 @@ import './App.css'
 function App() {
     const [theme, setTheme] = useState('light')
     const [selectedDay, setSelectedDay] = useState(null)
-    const [isRamadan, setIsRamadan] = useState(false)
-
-    // Ramadan Start Date: Feb 17, 2026 (Adjust as needed)
-    const RAMADAN_START_DATE = new Date('2026-02-17T00:00:00')
 
     useEffect(() => {
-        const today = new Date()
-        if (today >= RAMADAN_START_DATE) {
-            setIsRamadan(true)
-        }
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'light'
+        setTheme(savedTheme)
+        document.documentElement.setAttribute('data-theme', savedTheme)
     }, [])
 
     useEffect(() => {
@@ -51,8 +46,7 @@ function App() {
         <div className="app">
             <div className="container">
                 <Header theme={theme} toggleTheme={toggleTheme} />
-                {isRamadan && <LivePrayerTimes />}
-                <Countdown />
+                <LivePrayerTimes />
                 <PrayerTable onDayClick={openDayDetails} />
                 <DuaSlideshow />
                 <Footer />

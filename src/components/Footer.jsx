@@ -1,4 +1,4 @@
-import { Download } from 'lucide-react'
+import { Download, ExternalLink } from 'lucide-react'
 import './Footer.css'
 
 function Footer() {
@@ -15,13 +15,26 @@ function Footer() {
                 Ramadan Mubarak
             </div>
 
-            <button className="download-btn" onClick={handleDownload}>
-                <Download size={20} />
-                Download PDF Calendar
-            </button>
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '16px' }}>
+                <a
+                    href="https://quran.williamslakemuslims.ca/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="download-btn"
+                    style={{ textDecoration: 'none', margin: '0' }}
+                >
+                    <ExternalLink size={20} />
+                    Digital Quran
+                </a>
+
+                <button className="download-btn" onClick={handleDownload} style={{ margin: '0' }}>
+                    <Download size={20} />
+                    Download PDF Calendar
+                </button>
+            </div>
 
             <p className="footer-info">
-                Source: Islamic Society of North America | Fajr 15.0°, Isha 15.0°
+                Source: Islamic Finder | Islamic Society of North America | Fajr 15.0°, Isha 15.0°
                 <br />
                 Fiqh Jafria: Suhoor Time -10min | Iftar Time +10min
             </p>
@@ -32,5 +45,6 @@ function Footer() {
         </div>
     )
 }
+
 
 export default Footer

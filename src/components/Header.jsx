@@ -1,4 +1,4 @@
-import { Moon, Sun, Share2, Download } from 'lucide-react'
+import { Moon, Sun, Share2, Download, BookOpen } from 'lucide-react'
 import './Header.css'
 
 function Header({ theme, toggleTheme }) {
@@ -32,6 +32,18 @@ function Header({ theme, toggleTheme }) {
     return (
         <div className="header">
             <div className="header-pattern"></div>
+
+            <a
+                href="https://quran.williamslakemuslims.ca/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="header-floating-btn"
+                title="Read Digital Quran"
+            >
+                <BookOpen size={24} className="quran-icon" />
+                <span className="quran-text">Digital Quran</span>
+            </a>
+
             <div className="header-logo-container">
                 <img src="/logo.jpg" alt="BCMA Logo" className="header-logo" />
             </div>

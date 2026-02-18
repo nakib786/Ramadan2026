@@ -35,12 +35,22 @@ function LivePrayerTimes() {
         })
     }
 
-    const formatTime = (date) => {
-        return date.toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-        })
+    const getPrayerDate = (timeStr, dateStr) => {
+        if (!timeStr || !dateStr) return null;
+        // Clean up the time string to ensure it parses correctly
+        return new Date(`${dateStr} ${timeStr}`);
+    }
+
+    const formatCountdown = (ms) => {
+        const totalSeconds = Math.floor(ms / 1000);
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+
+        if (hours > 0) {
+            return `${hours}h ${minutes}m ${seconds}s`;
+        }
+        return `${minutes}m ${seconds}s`;
     }
 
     // Prepare data for display based on the PDF keys
@@ -56,22 +66,47 @@ function LivePrayerTimes() {
     return (
         <div className="live-prayer-times">
             <div className="live-header">
-                <h3>Today's Prayer Times (Williams Lake, BC)</h3>
-                <div className="live-date">
-                    <Clock size={16} />
-                    <span>{formatDate(currentTime)} - {formatTime(currentTime)}</span>
+                <h3>Today's Prayer Times</h3>
+
+                {/* Distinct Current Time Display */}
+                <div className="current-time-container">
+                    <div className="current-time-value">
+                        {currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                    </div>
+                    <div className="current-date-value">
+                        {formatDate(currentTime)}
+                    </div>
                 </div>
-                <div className="source">Source: Ramadan 2026 Timetable PDF</div>
+
+                <div className="source">Source: <a href="https://www.islamicfinder.org/">Islamic Finder</a></div>
             </div>
 
             {todaysPrayers ? (
                 <div className="live-times-grid">
-                    {prayersToDisplay.map((prayer, index) => (
-                        <div key={index} className="live-time-card">
-                            <div className="prayer-name-live">{prayer.name}</div>
-                            <div className="prayer-time-live">{prayer.time}</div>
-                        </div>
-                    ))}
+                    {prayersToDisplay.map((prayer, index) => {
+                        const prayerDate = getPrayerDate(prayer.time, todaysPrayers.date);
+                        const isPassed = prayerDate && currentTime > prayerDate;
+                        const timeDiff = prayerDate ? prayerDate - currentTime : 0;
+
+                        return (
+                            <div
+                                key={index}
+                                className={`live-time-card ${isPassed ? 'passed' : ''}`}
+                            >
+                                <div className="prayer-name-live">{prayer.name}</div>
+                                <div className="prayer-time-live">{prayer.time}</div>
+                                <div className="prayer-countdown-live">
+                                    {isPassed ? (
+                                        <span className="status-passed">Completed</span>
+                                    ) : (
+                                        <span className="status-upcoming">
+                                            - {formatCountdown(timeDiff)}
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
             ) : (
                 <div className="text-center p-4">
