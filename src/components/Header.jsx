@@ -33,6 +33,25 @@ function Header({ theme, toggleTheme, notificationStatus, enablePrayerNotificati
         <div className="header">
             <div className="header-pattern"></div>
 
+            <button
+                type="button"
+                className={`header-floating-btn header-floating-notify ${notificationStatus === 'enabled' ? 'active' : ''}`}
+                onClick={enablePrayerNotifications}
+                aria-label="Enable Suhoor and Iftar notifications"
+                title={
+                    notificationStatus === 'enabled'
+                        ? 'Suhoor/Iftar alerts are enabled'
+                        : 'Enable Suhoor/Iftar alerts (30 minutes before each time)'
+                }
+                disabled={notificationStatus === 'requesting'}
+            >
+                <span className="notify-icon-wrap">
+                    <Bell size={24} />
+                    <span className="notify-dot" aria-hidden="true" />
+                </span>
+                <span className="quran-text">Alerts</span>
+            </button>
+
             <a
                 href="https://quran.williamslakemuslims.ca/"
                 target="_blank"
@@ -62,20 +81,6 @@ function Header({ theme, toggleTheme, notificationStatus, enablePrayerNotificati
                     title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
                 >
                     {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
-                </button>
-
-                <button
-                    className={`icon-btn ${notificationStatus === 'enabled' ? 'active' : ''}`}
-                    onClick={enablePrayerNotifications}
-                    aria-label="Enable Suhoor and Iftar notifications"
-                    title={
-                        notificationStatus === 'enabled'
-                            ? 'Suhoor/Iftar alerts are enabled'
-                            : 'Enable Suhoor/Iftar alerts (30 minutes before each time)'
-                    }
-                    disabled={notificationStatus === 'requesting'}
-                >
-                    <Bell size={20} />
                 </button>
 
                 <button
