@@ -1,7 +1,7 @@
-import { Moon, Sun, Share2, Download, BookOpen } from 'lucide-react'
+import { Moon, Sun, Share2, Download, BookOpen, Bell } from 'lucide-react'
 import './Header.css'
 
-function Header({ theme, toggleTheme }) {
+function Header({ theme, toggleTheme, notificationStatus, enablePrayerNotifications }) {
     const handleShare = async () => {
         if (navigator.share) {
             try {
@@ -62,6 +62,20 @@ function Header({ theme, toggleTheme }) {
                     title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
                 >
                     {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+                </button>
+
+                <button
+                    className={`icon-btn ${notificationStatus === 'enabled' ? 'active' : ''}`}
+                    onClick={enablePrayerNotifications}
+                    aria-label="Enable Suhoor and Iftar notifications"
+                    title={
+                        notificationStatus === 'enabled'
+                            ? 'Suhoor/Iftar alerts are enabled'
+                            : 'Enable Suhoor/Iftar alerts (30 minutes before each time)'
+                    }
+                    disabled={notificationStatus === 'requesting'}
+                >
+                    <Bell size={20} />
                 </button>
 
                 <button
